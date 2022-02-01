@@ -1,18 +1,18 @@
-const express = require("express");
+
 const fs = require("fs");
+const express = require('express');
+const path = require("path");
+const app = express();
+const PORT = process.env.PORT || 3001;
+const dbJson = require("./db/db.json");
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static('./public'));
 
-var exp = express();
-var PORT = process.env.PORT || 3001
+require("./routes/api_route")(app);
+require("./routes/html_route")(app);
 
-exp.use(express.urlencoded({ extended: true }));
-exp.use(express.json());
-exp.use("/public/assets", express.static("./public/assets"));
-
-
-require("./routs/html_route")(exp);
-require("./routs/api_route")(exp);
-
-exp.listen(PORT, function() {
-    console.log("App listening on PORT " + PORT);
+app.listen(PORT, () => {
+  console.log(`App listening on PORT: ${PORT}`);
 });
